@@ -1,0 +1,94 @@
+# No explicit version needed for modern Docker Compose
+
+services:
+  eureka-server:
+    build: ./service-registry
+    ports:
+      - "8762:8762"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8762/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+
+  mysql-course:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: course_db
+      MYSQL_ROOT_HOST: "%"
+    volumes:
+      - mysql-course-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+
+  course-service:
+    build: ./course-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql-course
+      - eureka-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-course:3306/course_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8762/eureka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    restart: on-failure
+
+  mysql-room:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: room_db
+      MYSQL_ROOT_HOST: "%"
+    volumes:
+      - mysql-room-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+
+  room-service:
+    build: ./room-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mysql-room
+      - eureka-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-room:3306/room_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8762/eureka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    restart: on-failure
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - course-service
+      - room-service
+      - eureka-server
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8762/eureka
+    restart: on-failure
+
+volumes:
+  mysql-course-data:
+  mysql-room-data:
