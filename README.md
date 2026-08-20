@@ -805,7 +805,3 @@ Improved secrets management
 **Tushar Mall**
 
 Java Backend Developer | Spring Boot | Microservices | AWS
-
-
-```
-```
