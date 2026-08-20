@@ -184,6 +184,7 @@ GET /courses/search-advanced?name=Java&duration=6
 
 <img width="1257" height="175" alt="Screenshot 2026-08-20 164703" src="https://github.com/user-attachments/assets/b2f8f71d-28dc-474f-8cb4-dc88e7e220df" />
 <img width="1258" height="312" alt="Screenshot 2026-08-20 164632" src="https://github.com/user-attachments/assets/a2e72542-026e-44cb-91f2-2f6da76e3bdd" />
+<img width="1895" height="942" alt="image" src="https://github.com/user-attachments/assets/10daf1c0-e273-43fe-b581-9d1ced502760" />
 
 
 
