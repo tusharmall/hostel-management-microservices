@@ -1,6 +1,6 @@
-# Cloud-Native Hostel Management Microservices
+# Hostel Management Microservices
 
-A cloud-native Hostel Management backend built with **Java, Spring Boot, Spring Cloud, REST APIs, MySQL, Docker, and AWS EC2**.
+A Hostel Management backend built with **Java, Spring Boot, Spring Cloud, REST APIs, MySQL, Docker, and AWS EC2**.
 
 The original application was converted from a monolithic architecture into independent **Course Service** and **Room Service** microservices. The application uses **Eureka Service Discovery, Spring Cloud API Gateway, OpenFeign, Spring Security with JWT, Swagger/OpenAPI, Docker Compose, and separate MySQL databases** for the services.
 
